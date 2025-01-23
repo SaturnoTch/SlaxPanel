@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Stats</title>
+</head>
+<body>
+    <div>
+        <strong>Console Test</strong>
+        <form action="/cmd" method="POST">
+            <input type="text" placeholder="enter command" required name="command">
+            <button type="submit">Send Command</button>
+        </form>
+    </div>
+    <h1>Estadísticas</h1>
+    <h2>Almacenamiento</h2>
+    <h3>Almacenamiento Total: {{.diskTotal}} <span style="color: rgb(0, 194, 0);">GB</span></h3>
+    <h3>Almacenamiento Usado: {{.diskUsed}} <span style="color: rgb(0, 194, 0);">GB</span></h3>
+    <h3>Almacenamiento Libre: {{.diskFree}} <span style="color: rgb(0, 194, 0);">GB</span></h3>
+    <br>
+    <h2>RAM</h2>
+    <h3>Ram Total: {{ .ramTotal }} <span style="color: rgb(0, 194, 0);">MB</span></h3>
+    <h2>Ram Usada: {{ .ramUsed }} <span style="color: rgb(0,194,0)">MB</span></h2>
+    <h2>Ram Libre: {{ .ramFree }} <span style="color: rgb(0,194,0)">MB</span></h2>
+    <br>
+    <h2>CPU</h2>
+    <h3>Cores: {{.coresTotal}}</h3>
+    <h3>Uso de CPU: {{.cpu}}</h3>
+
+    <h1>System</h1>
+    <form action="/shutdown" method="POST">
+        <input type="number" placeholder="program shutdown" name="timer">
+        <button type="submit">Reboot System</button>
+    </form>
+
+
+    
+    
+    
+</body>
+</html>
