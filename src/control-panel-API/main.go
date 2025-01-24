@@ -60,6 +60,8 @@ func main() {
 	// Router
 	r := gin.Default()
 	r.LoadHTMLFiles("./pages/dashboard.html")
+	// cargo statics
+	r.Static("/static", "./pages/static")
 	// Stats la ruta que muestra informacion del sistema
 	// en la web
 	r.GET("/home/dashboard", func(c *gin.Context) {

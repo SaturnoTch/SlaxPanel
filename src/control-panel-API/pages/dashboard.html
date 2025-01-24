@@ -64,7 +64,7 @@
               comando: <span id="show_command">No hay ningun comando para enviar</span>
               salida: <span id="show_output">No hay nada que mostrar</span>
             </pre>
-           <form id="form_console" action="/cmd" method="POST">
+           <form action="/cmd" method="POST">
           <div style="width: 100%;" class="field has-addons">
              <div class="control is-expanded">
                <input class="input" id="command" name="command" type="text" placeholder="Ingresa un comando" required>
@@ -94,7 +94,7 @@
               programacion: <span id="show_timer">No hay ninguna programacion para el reinicio de la maquina</span>
               salida: <span id="show_output_system">No hay nada que mostrar</span>
             </pre>
-           <form id="form_system" action="/shutdown" method="POST">
+           <form action="/shutdown" method="POST">
           <div style="width: 100%;" class="field has-addons">
              <div class="control is-expanded">
                <input class="input" id="timer" name="timer" type="number" placeholder="Programa el reinicio de la maquina" required>
@@ -227,8 +227,8 @@
     <p>Tambien puedes encontrar este proyecto en <a href="https://korxteam.netlify.app">KorxTeam</a></p>
   </div>
 </footer>
-    <script src="showSection.js"></script>
-    <script src="showCommand.js"></script>
-    <script src="showTimer.js"></script>
+    <script src="/static/js/showSection.js"></script>
+    <script src="/static/js/showCommand.js"></script>
+    <script src="/static/js/showTimer.js"></script>
   </body>
 </html>
