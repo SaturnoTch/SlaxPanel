@@ -1,44 +1,234 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es" data-theme="dark">
+  <head>
     <meta charset="UTF-8">
-    <title>Stats</title>
-</head>
-<body>
-    
-    
-    <div>
-        <strong>Console Test</strong>
-        <form action="/cmd" method="POST">
-            <input type="text" placeholder="enter command" required name="command">
-            <button type="submit">Send Command</button>
-        </form>
-    </div>
-    <h1>Estadísticas</h1>
-    <a href="/home/dashboard"><button type="button">Refresh</button></a>
-    <h2>Almacenamiento</h2>
-    <h3>Almacenamiento Total: {{.diskTotal}} <span style="color: rgb(0, 194, 0);">GB</span></h3>
-    <h3>Almacenamiento Usado: {{.diskUsed}} <span style="color: rgb(0, 194, 0);">GB</span></h3>
-    <h3>Almacenamiento Libre: {{.diskFree}} <span style="color: rgb(0, 194, 0);">GB</span></h3>
-    <br>
-    <h2>RAM</h2>
-    <h3>Ram Total: {{ .ramTotal }} <span style="color: rgb(0, 194, 0);">MB</span></h3>
-    <h2>Ram Usada: {{ .ramUsed }} <span style="color: rgb(0,194,0)">MB</span></h2>
-    <h2>Ram Libre: {{ .ramFree }} <span style="color: rgb(0,194,0)">MB</span></h2>
-    <br>
-    <h2>CPU</h2>
-    <h3>Cores: {{.coresTotal}}</h3>
-    <h3>Uso de CPU: {{.cpu}}</h3>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+>
+    <title>Dashboard SlaxPanel</title>
+    <link rel="icon" href="./logo.png" type="image/x-icon">
+    <style>
+      body {
+        display: grid;
+        min-height: 100dvh;
+        grid-template-rows: auto 1fr auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header style="position: sticky; top: 0; z-index: 999; background-color: #14161a;">
+     <div class="tabs is-centered">
+  <ul>
+    <li id="home" class="is-active"><a id="home"><span class="icon"><i class="fa-solid fa-home"></i></span><span>Inicio</span></a></li>
+    <li id="console"><a><span class="icon is-small"><i class="fa-solid fa-terminal"></i></span><span>Consola</span></a></li>
+    <li id="disk"><a><span class="icon is-small"><i class="fa-solid fa-floppy-disk"></i></span><span>Almacenamiento</span></a></li>
+    <li id="ram"><a><span class="icon is-small"><i class="fa-solid fa-memory"></i></span><span>RAM</span></a></li>
+    <li id="cpu"><a><span class="icon is-small"><i class="fa-solid fa-server"></i></span><span>CPU</span></a></li>
+  </ul>
+</div>
+</header>
+    <main>
 
-    <h1>System</h1>
-    <form action="/shutdown" method="POST">
-        <input type="number" placeholder="program shutdown" name="timer">
-        <button type="submit">Reboot System</button>
-    </form>
+      <section id="home_section" class="hero is-large is-primary">
+        <div class="hero-body">
+          <p class="title">Gestiona tu proyecto de manera fácil.</p>
+          <p class="subtitle">En esta Dashboard podras hacer lo dificil de un proyecto, el poder gestionarlo, revisar el almacenamiento, el uso de la memoria RAM, el uso del CPU y poder hacer modificaciones al sistema.</p>
+          <span class="tag is-medium is-link"><span class="icon"><i class="fa-solid fa-file-shield"></i></span><span>Seguro</span></span>
+           <span class="tag is-medium is-link"><span class="icon"><i class="fa-solid fa-check"></i></span><span>Facil de Usar</span></span>
+            <span class="tag is-medium is-link"><span class="icon"><i class="fa-solid fa-code"></i></span><span>Codigo Abierto</span></span>
+        </div>
+       </section>
+
+      <section id="console_section" style="display: none;" class="section is-small">
+
+              <a href="/home/dashboard" class="button is-link">🚀 Actualizar Información</a>
+        <hr>
+
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+            <div class="media-content">
+              <p class="title is-4">Consola</p>
+              <p class="subtitle is-6">Envia comandos a la maquina.</p>
+            </div>
+          </div>
+          </div>
+
+          <div class="content">
+
+            <pre>
+              comando: <span id="show_command">No hay ningun comando para enviar</span>
+              salida: <span id="show_output">No hay nada que mostrar</span>
+            </pre>
+           <form id="form_console" action="/cmd" method="POST">
+          <div style="width: 100%;" class="field has-addons">
+             <div class="control is-expanded">
+               <input class="input" id="command" name="command" type="text" placeholder="Ingresa un comando" required>
+             </div>
+
+             <div class="control">
+             <button class="button is-link" type="submit">Enviar</button>
+           </div>
+            </div>
+           </form> 
+          </div>
+          </div>
+
+           <div class="card">
+          <div class="card-content">
+            <div class="media">
+            <div class="media-content">
+              <p class="title is-4">Sistema</p>
+              <p class="subtitle is-6">Ten cuidado con lo que vayas a hacer aqui.</p>
+            </div>
+          </div>
+          </div>
+
+          <div class="content">
+
+            <pre>
+              programacion: <span id="show_timer">No hay ninguna programacion para el reinicio de la maquina</span>
+              salida: <span id="show_output_system">No hay nada que mostrar</span>
+            </pre>
+           <form id="form_system" action="/shutdown" method="POST">
+          <div style="width: 100%;" class="field has-addons">
+             <div class="control is-expanded">
+               <input class="input" id="timer" name="timer" type="number" placeholder="Programa el reinicio de la maquina" required>
+             </div>
+
+             <div class="control">
+             <button class="button is-danger" type="submit">Reiniciar</button>
+           </div>
+            </div>
+           </form> 
+          </div>
+          </div>
 
 
-    
-    
-    
-</body>
+
+      </section>
+
+     <section id="disk_section" class="section is-small">
+      <a href="/home/dashboard" class="button is-link">🚀 Actualizar Información</a>
+        <hr>
+      <hgroup>
+        <h2 class="title is-2">Almacenamiento</h2>
+        <p>Gestiona el Almacenamiento de tu proyecto.</p>
+        <hr>
+      </hgroup>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Total</h3>
+            <p class="subtitle is-3">{{.diskTotal}}<span style="color: rgb(0, 194, 0);">GB</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Usado</h3>
+            <p class="subtitle is-3">{{.diskUsed}}<span style="color: rgb(0, 194, 0);">GB</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Libre</h3>
+            <p class="subtitle is-3">{{.diskFree}}<span style="color: rgb(0, 194, 0);">GB</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ram_section" class="section is-small">
+            <a href="/home/dashboard" class="button is-link">🚀 Actualizar Información</a>
+        <hr>
+
+        <hgroup>
+        <h2 class="title is-2">Memoria RAM</h2>
+        <p>Gestiona la memoria de tu proyecto.</p>
+        <hr>
+      </hgroup>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Total</h3>
+            <p class="subtitle is-3">{{.ramTotal}}<span style="color: rgb(0, 194, 0);">MB</span></p>
+          </div>
+        </div>
+      </div>
+
+       <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Usada</h3>
+            <p class="subtitle is-3">{{.ramUsed}}<span style="color: rgb(0, 194, 0);">MB</span></p>
+          </div>
+        </div>
+      </div>
+
+       <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Libre</h3>
+            <p class="subtitle is-3">{{.ramFree}}<span style="color: rgb(0, 194, 0);">MB</span></p>
+          </div>
+        </div>
+      </div>
+      </section>
+
+      <section id="cpu_section" class="section is-small">
+
+         <a href="/home/dashboard" class="button is-link">🚀 Actualizar Información</a>
+        <hr>
+
+        <hgroup>
+        <h2 class="title is-2">CPU</h2>
+        <p>Gestiona el uso del CPU de tu proyecto.</p>
+        <hr>
+      </hgroup>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Cores</h3>
+            <p class="subtitle is-3">{{.coresTotal}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <h3 class="title is-3">Uso del CPU</h3>
+            <p class="subtitle is-3">{{.cpu}}</p>
+          </div>
+        </div>
+      </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>SlaxPanel</strong> es un proyecto de <a href="https://github.com/ZDerkzx/SlaxPanel">Codigo Abierto</a> 
+    </p>
+    <p>Tambien puedes encontrar este proyecto en <a href="https://korxteam.netlify.app">KorxTeam</a></p>
+  </div>
+</footer>
+    <script src="showSection.js"></script>
+    <script src="showCommand.js"></script>
+    <script src="showTimer.js"></script>
+  </body>
 </html>
