@@ -3,6 +3,7 @@ package main
 // Imports necesarios
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"strconv"
 
@@ -50,9 +51,13 @@ func programShutdown(seconds int) {
 	}
 }
 
-func sendCommand(command string) {
+func sendCommand(command string) (out string) {
 	cmd := exec.Command("cmd", "/C", command)
-	cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
+	return string(output)
 }
 
 func main() {
@@ -91,10 +96,19 @@ func main() {
 			fmt.Println("Error: No se pudo convertir timer a int; ", err)
 		}
 		programShutdown(seconds)
+		c.Redirect(301, "/home/dashboard")
 	})
 	r.POST("/cmd", func(c *gin.Context) {
 		paramCommand := c.PostForm("command")
-		sendCommand(paramCommand)
+		output := sendCommand(paramCommand)
+		file, err := os.OpenFile("console.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			fmt.Println("Error: No se pudo abrir el archivo 'console.json'; ", err)
+		}
+		defer file.Close()
+		file.WriteString(output)
+		c.Redirect(301, "/home/dashboard")
 	})
 	r.Run()
+
 }
