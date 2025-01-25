@@ -60,11 +60,21 @@ func sendCommand(command string) (out string) {
 	return string(output)
 }
 
+func setRamLimiter(max int) {
+	_, usedRam, _ := getRam()
+	for true {
+		if usedRam >= max {
+			cmd := exec.Command("cmd", "/C", "shutdown -r -f -t 100")
+			cmd.Run()
+			return
+		}
+	}
+}
 func main() {
 
 	// Router
 	r := gin.Default()
-	r.LoadHTMLFiles("./pages/dashboard.html")
+	r.LoadHTMLFiles("./pages/dashboard.html", "./pages/index.html")
 	// cargo statics
 	r.Static("/static", "./pages/static")
 	// Stats la ruta que muestra informacion del sistema
@@ -108,6 +118,21 @@ func main() {
 		defer file.Close()
 		file.WriteString(output)
 		c.Redirect(301, "/home/dashboard")
+	})
+
+	r.GET("/home/dashboard/limiter", func(c *gin.Context) {
+		c.HTML(200, "index.html", gin.H{
+			"maxram": "0",
+		})
+	})
+
+	r.POST("/home/dashboard/limiter/activate", func(c *gin.Context) {
+		ramLimit := c.PostForm("limit")
+		convertRamLimit, err := strconv.Atoi(ramLimit)
+		if err != nil {
+			fmt.Println("Error: no se pudo convertir la variable; ", err)
+		}
+		setRamLimiter(convertRamLimit)
 	})
 	r.Run()
 
