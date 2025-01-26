@@ -146,13 +146,13 @@ footer {
 }
 
 strong {
-    color:rgb(117, 133, 255, 1);
+    color:rgb(155, 140, 23);
 }
 
 strong:hover {
     transform: scale(1.05);
     transition: all 500ms;
-    color: rgb(82, 102, 255);
+    color: rgb(218, 178, 33);
 }
 
 .Estilo-color p{
@@ -199,6 +199,6 @@ strong:hover {
     height: 100%;
     margin: 0;
     font-size: 20px;
-    color: rgb(117, 133, 255, 1);
+    color: rgb(155, 140, 23);
 }
 
