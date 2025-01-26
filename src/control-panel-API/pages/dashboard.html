@@ -33,7 +33,7 @@
 </header>
     <main>
 
-      <section id="home_section" style="display: block;" class="hero is-large is-primary">
+      <section id="home_section" style="display: block;" class="hero is-large is-fullheight">
         <div class="hero-body">
           <p class="title">Gestiona tu proyecto de manera fácil.</p>
           <p class="subtitle">En esta Dashboard podras hacer lo dificil de un proyecto, el poder gestionarlo, revisar el almacenamiento, el uso de la memoria RAM, el uso del CPU y poder hacer modificaciones al sistema.</p>
@@ -62,7 +62,7 @@
 
             <pre>
               comando: <span id="show_command">No hay ningun comando para enviar</span>
-              salida: <span id="show_output">No hay nada que mostrar</span>
+              salida: <span id="show_output"> {{.value}}No hay nada que mostrar</span>
             </pre>
            <form action="/cmd" method="POST">
           <div style="width: 100%;" class="field has-addons">

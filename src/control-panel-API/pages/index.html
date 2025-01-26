@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limiter</title>
+</head>
+<body>
+    <a href="/home/dashboard"><button>Dashboard</button></a>
+    <h1>Limiter</h1>
+    <p>¿Para que sirve el Limiter?
+        el Limiter te ayuda a controlar
+        los recursos de tu servidor, si el servidor pasa del limite
+        establecido, tu servidor automaticamente se reiniciara, para no sobre cargar al servidor.
+    </p>
+
+    <form action="/home/dashboard/limiter/activate" method="POST">
+        <input type="number" placeholder="1024" name="limit" required>
+        <button type="submit">Apply Changes</button>
+    </form>
+    <br>
+    <div>
+        <h2>Default Configuration</h2>
+        <h3>Max Ram: {{.maxram}}<span style="color: rgb(0,194,0)">MB</span></h3> 
+    </div>
+</body>
+</html>
