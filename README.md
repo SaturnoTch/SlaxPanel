@@ -18,5 +18,5 @@ SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar 
   - ZDevzero()
   - estefdev()
   - Arthur()
-  - crack81()
+  - crack81(https://github.com/GarnicaJR)
   
