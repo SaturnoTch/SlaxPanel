@@ -3,13 +3,35 @@ package main
 // Imports necesarios
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"main/hwutils"
 	"os"
 	"strconv"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	L_MaxRam := 5500
+	UsedRam := 0
+	go func() {
+		for {
+			_, UsedRam, _ = hwutils.GetRam()
+			fmt.Println(UsedRam)
+			if UsedRam >= L_MaxRam {
+				log := hwutils.SendCommand("shutdown -r -f -t 60")
+				file_log, err := os.OpenFile("Limiter.json", os.O_CREATE, os.ModeAppend)
+				if err != nil {
+					fmt.Println("esto va en errors.json --Aun no esta listo --")
+					defer file_log.Close()
+					return
+				}
+				defer file_log.Close()
+				os.WriteFile(file_log.Name(), []byte(log), 0644)
+			}
+			time.Sleep(1 * time.Second)
+		}
+	}()
 
 	// Router
 	r := gin.Default()
@@ -61,18 +83,24 @@ func main() {
 
 	r.GET("/home/dashboard/limiter", func(c *gin.Context) {
 		c.HTML(200, "index.html", gin.H{
-			"maxram": "0",
+			"maxram": L_MaxRam,
 		})
 	})
 
-	r.POST("/home/dashboard/limiter/activate", func(c *gin.Context) {
-		ramLimit := c.PostForm("limit")
-		convertRamLimit, err := strconv.Atoi(ramLimit)
-		if err != nil {
-			fmt.Println("Error: no se pudo convertir la variable; ", err)
+	r.PUT("/home/dashboard/limiter/updatelimiter", func(c *gin.Context) {
+		var request struct {
+			Updateram int `json:"updateram"`
 		}
-		hwutils.SetRamLimiter(convertRamLimit)
+
+		if err := c.ShouldBindJSON(&request); err != nil {
+			c.JSON(400, gin.H{"error": "JSON inválido"})
+			return
+		}
+
+		L_MaxRam = request.Updateram
+		c.JSON(200, gin.H{"message": "Límite de RAM actualizado"})
 	})
+
 	r.Run()
 
 }

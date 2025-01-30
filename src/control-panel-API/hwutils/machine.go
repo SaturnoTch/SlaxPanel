@@ -2,11 +2,12 @@ package hwutils
 
 import (
 	"fmt"
+	"os/exec"
+	"strconv"
+
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/mem"
-	"os/exec"
-	"strconv"
 )
 
 func GetRam() (ramTotal int, ramUsed int, ramFree int) {
