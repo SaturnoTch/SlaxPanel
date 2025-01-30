@@ -15,7 +15,7 @@ SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar 
 - Consola
 - Logs
 - Limiters
-- Muestra **informacion** sobre el sistema, como la ram,cpu y almacenamiento.
+- Muestra **informacion** del sistema, como la ram,cpu y almacenamiento.
 - Programar un **Apagado**
 - Panel Web **Agradable** Visualmente
 
