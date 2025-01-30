@@ -1,4 +1,4 @@
-#SlaxPanel
+# SlaxPanel
 
 SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar tu servidor.
 
