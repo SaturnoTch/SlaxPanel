@@ -1,11 +1,11 @@
 # SlaxPanel
 
-SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar tu servidor.
+SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar tu **servidor**.
 
 # ¿Por que usar SlaxPanel?
 
 - Es Minimalista y amigable con el usuario
-- Es Gratis y OpenSource
+- Es Gratis y **OpenSource**
 - Es de pocos requisitos
 - es facil de instalar
 - es seguro
@@ -32,4 +32,9 @@ SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar 
 
 # Licencia
 ****MIT****
-Usted tiene total control sobre el **Panel**
+Usted tiene total control sobre como ***usa/modifica*** **SlaxPanel**
+
+# Jerarquia de Carpetas
+
+
+- *Pronto*
