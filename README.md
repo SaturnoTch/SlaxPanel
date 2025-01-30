@@ -19,4 +19,8 @@ SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar 
   - estefdev(https://github.com/EstefSpace)
   - Arthur(https://github.com/Arthur-Leftboard)
   - crack81(https://github.com/GarnicaJR)
-  
+
+
+# Licencia
+****MIT****
+Usted tiene total control sobre el **Panel**
