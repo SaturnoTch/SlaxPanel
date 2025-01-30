@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	L_MaxRam := 5500
+	L_MaxRam := 16000
 	UsedRam := 0
 	go func() {
 		for {
