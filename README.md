@@ -12,7 +12,7 @@ SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar 
 
   # Creadores de SlaxPanel
 
-  ** Agradecemos a todos los desarrolladores que hicieron posible este proyecto, todos ellos dejan una
+  **Agradecemos a todos los desarrolladores que hicieron posible este proyecto, todos ellos dejan una
   huella aqui para ser recordados y admirados por su arduo trabajo**
 
   - ZDevzero()
