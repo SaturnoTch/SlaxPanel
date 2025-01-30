@@ -8,7 +8,7 @@ SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar 
 - Es Gratis y OpenSource
 - Es de pocos requisitos
 - es facil de instalar
-- es segura
+- es seguro
 
   # Creadores de SlaxPanel
 
