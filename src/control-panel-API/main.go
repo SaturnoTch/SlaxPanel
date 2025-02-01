@@ -11,14 +11,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var L_MaxRam int = 64000
+var L_MaxDisk int = 550
+
 func main() {
-	L_MaxRam := 32000
 	UsedRam := 0
+	UsedDisk := 0
 	go func() {
 		for {
 			_, UsedRam, _ = hwutils.GetRam()
-			fmt.Println(UsedRam)
-			if UsedRam >= L_MaxRam {
+			_, UsedDisk, _ = hwutils.GetDisk()
+			if UsedRam >= L_MaxRam || UsedDisk >= L_MaxDisk {
 				log := hwutils.SendCommand("shutdown -r -f -t 60")
 				file_log, err := os.OpenFile("Limiter.json", os.O_CREATE, os.ModeAppend)
 				if err != nil {
@@ -83,22 +86,23 @@ func main() {
 
 	r.GET("/home/dashboard/limiter", func(c *gin.Context) {
 		c.HTML(200, "index.html", gin.H{
-			"maxram": L_MaxRam,
+			"maxram":  L_MaxRam,
+			"maxdisk": L_MaxDisk,
 		})
 	})
 
-	r.PUT("/home/dashboard/limiter/updatelimiter", func(c *gin.Context) {
-		var request struct {
-			Updateram int `json:"updateram"`
+	r.POST("/home/dashboard/limiter/updatelimiter", func(c *gin.Context) {
+		fmt.Println("Changes Succesfull")
+		ramUpdated := c.PostForm("updateram")
+		diskUpdated := c.PostForm("updatedisk")
+		cnv_ramUpdated, err := strconv.Atoi(ramUpdated)
+		cnv_diskUpdated, err := strconv.Atoi(diskUpdated)
+		if err != nil {
+			fmt.Println("Error: No se pudo convertir; ", err)
 		}
-
-		if err := c.ShouldBindJSON(&request); err != nil {
-			c.JSON(400, gin.H{"error": "JSON inválido"})
-			return
-		}
-
-		L_MaxRam = request.Updateram
-		c.JSON(200, gin.H{"message": "Límite de RAM actualizado"})
+		L_MaxDisk = cnv_diskUpdated
+		L_MaxRam = cnv_ramUpdated
+		c.Redirect(301, "/home/dashboard/limiter")
 	})
 
 	r.Run()

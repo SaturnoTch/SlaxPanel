@@ -15,13 +15,18 @@
     </p>
 
     <form action="/home/dashboard/limiter/updatelimiter" method="POST">
-        <input type="number" placeholder="1024" name="updateram" required>
+        <label for="ram">Maximo uso de la Memoria Ram (<span style="color: rgb(212,83,0)">En MegaBytes</span>)</label>
+        <input id="ram" type="number" placeholder="64000" name="updateram" required>
+        <br>
+        <label for="disk">Maximo uso del almacenamiento(<span style="color: rgb(212,83,0)">En GigaBytes</span>)</label>
+        <input id="disk" type="number" placeholder="550" name="updatedisk" required>
         <button type="submit">Apply Changes</button>
     </form>
     <br>
     <div>
         <h2>Default Configuration</h2>
         <h3>Max Ram: {{.maxram}}<span style="color: rgb(0,194,0)">MB</span></h3> 
+        <h3>Max Ram: {{.maxdisk}}<span style="color: rgb(0,194,0)">GB</span></h3> 
     </div>
 </body>
 </html>
