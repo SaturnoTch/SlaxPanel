@@ -12,7 +12,7 @@ import (
 )
 
 var L_MaxRam int = 64000
-var L_MaxDisk int = 550
+var L_MaxDisk int = 655
 
 func main() {
 	UsedRam := 0
