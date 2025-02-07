@@ -17,23 +17,71 @@
         min-height: 100dvh;
         grid-template-rows: auto 1fr auto;
       }
+
+      .card {
+        box-shadow: 0px 0px 0px;
+        border: 1px solid #fff;
+      }
+
+      #home_section {
+        background-image: url("https://storage.ko-fi.com/cdn/useruploads/display/a40a84db-0e4e-4710-946b-af3b096257b7_nightcamp.gif");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      
     </style>
   </head>
   <body>
-    <header style="position: sticky; top: 0; z-index: 999; background-color: #14161a;">
-     <div class="tabs is-centered">
-  <ul>
-    <li id="home" class="is-active"><a id="home"><span class="icon"><i class="fa-solid fa-home"></i></span><span>Inicio</span></a></li>
-    <li id="console"><a><span class="icon is-small"><i class="fa-solid fa-terminal"></i></span><span>Consola</span></a></li>
-    <li id="disk"><a><span class="icon is-small"><i class="fa-solid fa-floppy-disk"></i></span><span>Almacenamiento</span></a></li>
-    <li id="ram"><a><span class="icon is-small"><i class="fa-solid fa-memory"></i></span><span>RAM</span></a></li>
-    <li id="cpu"><a><span class="icon is-small"><i class="fa-solid fa-server"></i></span><span>CPU</span></a></li>
-  </ul>
-</div>
+    <header style="position: sticky; top: 0; z-index: 999;">
+     <nav style="background-color: #181b20" class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/home">
+      <p class="title is-3">SlaxPanel</p>
+
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+
+
+    <div class="navbar-end">
+      <a id="home" class="navbar-item">
+        <span class="icon"><i class="fa-solid fa-home"></i></span><span>Inicio</span>
+      </a>
+
+      <a id="console" class="navbar-item">
+        <span class="icon"><i class="fa-solid fa-terminal"></i></span><span>Consola</span>
+      </a>
+
+      <a id="disk" class="navbar-item">
+        <span class="icon"><i class="fa-solid fa-floppy-disk"></i></span><span>Almacenamiento</span>
+
+
+      </a>
+
+      <a id="ram" class="navbar-item">
+        <span class="icon"><i class="fa-solid fa-memory"></i></span><span>RAM</span>
+      </a>
+
+      <a id="cpu" class="navbar-item">
+        <span class="icon"><i class="fa-solid fa-server"></i></span><span>CPU</span>
+      </a>
+
+    </div>
+  </div>
+</nav>
 </header>
     <main>
 
-      <section id="home_section" style="display: block;" class="hero is-large is-fullheight">
+      <section id="home_section" style="display: block;" class="hero is-large">
         <div class="hero-body">
           <p class="title">Gestiona tu proyecto de manera fácil.</p>
           <p class="subtitle">En esta Dashboard podras hacer lo dificil de un proyecto, el poder gestionarlo, revisar el almacenamiento, el uso de la memoria RAM, el uso del CPU y poder hacer modificaciones al sistema.</p>
@@ -48,7 +96,8 @@
               <a href="/home/dashboard" class="button is-link">🚀 Actualizar Información</a>
         <hr>
 
-        <div class="card">
+        <div>
+          <div class="card">
           <div class="card-content">
             <div class="media">
             <div class="media-content">
@@ -91,7 +140,7 @@
           <div class="content">
 
             <pre>
-              programacion: <span id="show_timer">No hay ninguna programacion para el reinicio de la maquina</span>
+              programacion: <span id="show_timer">No hay ninguna programacion</span>
               salida: <span id="show_output_system">No hay nada que mostrar</span>
             </pre>
            <form action="/shutdown" method="POST">
@@ -107,6 +156,7 @@
            </form> 
           </div>
           </div>
+        </div>
 
 
 
@@ -117,11 +167,13 @@
         <hr>
       <hgroup>
         <h2 class="title is-2">Almacenamiento</h2>
-        <p>Gestiona el Almacenamiento de tu proyecto.</p>
+        <p class=>Gestiona el Almacenamiento de tu proyecto.</p>
         <hr>
       </hgroup>
 
-      <div class="card">
+      <div class="columns is-desktop">
+        <div class="column">
+        <div class="card">
         <div class="card-content">
           <div class="content">
             <h3 class="title is-3">Total</h3>
@@ -129,7 +181,9 @@
           </div>
         </div>
       </div>
+    </div>
 
+     <div class="column"> 
       <div class="card">
         <div class="card-content">
           <div class="content">
@@ -138,7 +192,11 @@
           </div>
         </div>
       </div>
+    </div>
 
+
+
+      <div class="column">
       <div class="card">
         <div class="card-content">
           <div class="content">
@@ -147,6 +205,8 @@
           </div>
         </div>
       </div>
+      </div>
+    </div>
     </section>
 
     <section id="ram_section" style="display: none;" class="section is-small">
@@ -159,7 +219,9 @@
         <hr>
       </hgroup>
 
-      <div class="card">
+      <div class="columns is-desktop">
+        <div class="column">
+        <div class="card">
         <div class="card-content">
           <div class="content">
             <h3 class="title is-3">Total</h3>
@@ -167,7 +229,9 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="column">
        <div class="card">
         <div class="card-content">
           <div class="content">
@@ -176,7 +240,8 @@
           </div>
         </div>
       </div>
-
+</div>
+  <div class="column">
        <div class="card">
         <div class="card-content">
           <div class="content">
@@ -184,6 +249,8 @@
             <p class="subtitle is-3">{{.ramFree}}<span style="color: rgb(0, 194, 0);">MB</span></p>
           </div>
         </div>
+      </div>
+    </div>
       </div>
       </section>
 
@@ -198,7 +265,9 @@
         <hr>
       </hgroup>
 
-      <div class="card">
+     <div class="columns is-desktop">
+      <div class="column">
+       <div class="card">
         <div class="card-content">
           <div class="content">
             <h3 class="title is-3">Cores</h3>
@@ -206,7 +275,8 @@
           </div>
         </div>
       </div>
-
+    </div>
+    <div class="column">
       <div class="card">
         <div class="card-content">
           <div class="content">
@@ -215,6 +285,8 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
       </section>
 
     </main>
@@ -222,13 +294,38 @@
     <footer class="footer">
   <div class="content has-text-centered">
     <p>
-      <strong>SlaxPanel</strong> es un proyecto de <a href="https://github.com/ZDerkzx/SlaxPanel">Codigo Abierto</a> 
+      <strong>© 2025 SlaxPanel</strong>. Todos los derechos reservados.
     </p>
-    <p>Tambien puedes encontrar este proyecto en <a href="https://korxteam.netlify.app">KorxTeam</a></p>
+    <p>Tambien puedes encontrar este proyecto en <a target="_blank" rel="noopener noreferrer" href="https://korxteam.netlify.app">KorxTeam</a></p>
   </div>
 </footer>
-    <script src="/static/js/showSection.js"></script>
-    <script src="/static/js/showCommand.js"></script>
-    <script src="/static/js/showTimer.js"></script>
+    <script src="./static/js/showSection.js"></script>
+    <script src="./static/js/showCommand.js"></script>
+    <script src="./static/js/showTimer.js"></script>
+    <script>
+
+      //codigo proporcionado por https://bulma.io
+      document.addEventListener('DOMContentLoaded', () => {
+
+  // Get all "navbar-burger" elements
+  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+  // Add a click event on each of them
+  $navbarBurgers.forEach( el => {
+    el.addEventListener('click', () => {
+
+      // Get the target from the "data-target" attribute
+      const target = el.dataset.target;
+      const $target = document.getElementById(target);
+
+      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+      el.classList.toggle('is-active');
+      $target.classList.toggle('is-active');
+
+    });
+  });
+
+});
+</script>
   </body>
 </html>

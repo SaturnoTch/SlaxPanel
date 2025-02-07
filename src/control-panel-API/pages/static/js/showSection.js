@@ -4,12 +4,7 @@ function showSection(section) {
 
 			//localStorage
 			localStorage.setItem("section", "home");
-			//etiquetas <a></a>
-			document.getElementById("console").removeAttribute("class");
-			document.getElementById("home").setAttribute("class", "is-active");
-			document.getElementById("disk").removeAttribute("class");
-			document.getElementById("ram").removeAttribute("class");
-			document.getElementById("cpu").removeAttribute("class");
+			
 
 			//sections
 			document.getElementById("console_section").setAttribute("style", "display: none;");
@@ -22,12 +17,7 @@ function showSection(section) {
 		case "console":
 			//localStorage
 			localStorage.setItem("section", "console");
-			//etiquetas <a></a>
-			document.getElementById("console").setAttribute("class", "is-active");
-			document.getElementById("home").removeAttribute("class");
-			document.getElementById("disk").removeAttribute("class");
-			document.getElementById("ram").removeAttribute("class");
-			document.getElementById("cpu").removeAttribute("class");
+			
 
 			//sections
 			document.getElementById("console_section").setAttribute("style", "display: block;");
@@ -40,12 +30,7 @@ function showSection(section) {
 		case "disk":
 			//localStorage
 			localStorage.setItem("section", "disk");
-			//etiquetas <a></a>
-			document.getElementById("console").removeAttribute("class");
-			document.getElementById("home").removeAttribute("class");
-			document.getElementById("disk").setAttribute("class", "is-active");
-			document.getElementById("ram").removeAttribute("class");
-			document.getElementById("cpu").removeAttribute("class");
+			
 
 			//sections
 			document.getElementById("console_section").setAttribute("style", "display: none;");
@@ -58,12 +43,7 @@ function showSection(section) {
 		case "ram":
 			//localStorage
 			localStorage.setItem("section", "ram");
-			//etiquetas <a></a>
-			document.getElementById("console").removeAttribute("class");
-			document.getElementById("home").removeAttribute("class");
-			document.getElementById("disk").removeAttribute("class");
-			document.getElementById("ram").setAttribute("class", "is-active");
-			document.getElementById("cpu").removeAttribute("class");
+			
 
 			//sections
 			document.getElementById("console_section").setAttribute("style", "display: none;");
@@ -76,12 +56,7 @@ function showSection(section) {
 		case "cpu":
 			//localStorage
 			localStorage.setItem("section", "cpu");
-			//etiquetas <a></a>
-			document.getElementById("console").removeAttribute("class");
-			document.getElementById("home").removeAttribute("class");
-			document.getElementById("disk").removeAttribute("class");
-			document.getElementById("ram").removeAttribute("class");
-			document.getElementById("cpu").setAttribute("class", "is-active");
+			
 
 			//sections
 			document.getElementById("console_section").setAttribute("style", "display: none;");
