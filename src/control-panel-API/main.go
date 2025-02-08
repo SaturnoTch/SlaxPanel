@@ -3,6 +3,7 @@ package main
 // Imports necesarios
 import (
 	"fmt"
+	"main/handlers"
 	"main/hwutils"
 	"os"
 	"strconv"
@@ -63,26 +64,13 @@ func main() {
 			"ramFree":  info_RamFree,
 		})
 	})
-	r.POST("/shutdown", func(c *gin.Context) {
-		timer := c.PostForm("timer")
-		seconds, err := strconv.Atoi(timer)
-		if err != nil {
-			fmt.Println("Error: No se pudo convertir timer a int; ", err)
-		}
-		hwutils.ProgramShutdown(seconds)
-		c.Redirect(301, "/home/dashboard")
-	})
-	r.POST("/cmd", func(c *gin.Context) {
-		paramCommand := c.PostForm("command")
-		output := hwutils.SendCommand(paramCommand)
-		file, err := os.OpenFile("console.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			fmt.Println("Error: No se pudo abrir el archivo 'console.json'; ", err)
-		}
-		defer file.Close()
-		file.WriteString(output)
-		c.Redirect(301, "/home/dashboard")
-	})
+
+	// Programa un apagado
+	r.POST("/shutdown", handlers.Shutdown)
+
+	// Envia los comandos a la consola del
+	// Servidor
+	r.POST("/cmd", handlers.Cmd)
 
 	r.GET("/home/dashboard/limiter", func(c *gin.Context) {
 		c.HTML(200, "index.html", gin.H{
@@ -104,6 +92,8 @@ func main() {
 		L_MaxRam = cnv_ramUpdated
 		c.Redirect(301, "/home/dashboard/limiter")
 	})
+
+	r.DELETE("/home/dashboard/cleanup", handlers.Cleanup)
 
 	r.Run()
 
