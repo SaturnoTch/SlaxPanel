@@ -39,17 +39,20 @@ func main() {
 
 	// Router
 	r := gin.Default()
-	r.LoadHTMLFiles("./pages/dashboard.html", "./pages/index.html")
+	r.LoadHTMLFiles("./pages/dashboard.html", "./pages/limiter.html", "./pages/tools.html")
 	// cargo statics
 	r.Static("/static", "./pages/static")
 	// Stats la ruta que muestra informacion del sistema
 	// en la web
 	r.GET("/home/dashboard", func(c *gin.Context) {
-
+		cache_ConsoleLog, err := os.ReadFile("./console.json")
+		if err != nil {
+			fmt.Println("Error: No se pudo leer el archivo; ", err)
+		}
+		cnv_ConsoleLog := string(cache_ConsoleLog)
 		info_DiskTotal, info_DiskUsed, info_DiskFree := hwutils.GetDisk()
 		info_RamTotal, info_RamUsed, info_RamFree := hwutils.GetRam()
 		info_CoresTotal, info_CPU := hwutils.GetCPU()
-
 		c.HTML(200, "dashboard.html", gin.H{
 			// Disk
 			"diskTotal": info_DiskTotal,
@@ -62,18 +65,19 @@ func main() {
 			"ramTotal": info_RamTotal,
 			"ramUsed":  info_RamUsed,
 			"ramFree":  info_RamFree,
+			// Console
+			"consolelog": cnv_ConsoleLog,
 		})
 	})
 
 	// Programa un apagado
 	r.POST("/shutdown", handlers.Shutdown)
-
 	// Envia los comandos a la consola del
 	// Servidor
 	r.POST("/cmd", handlers.Cmd)
 
 	r.GET("/home/dashboard/limiter", func(c *gin.Context) {
-		c.HTML(200, "index.html", gin.H{
+		c.HTML(200, "limiter.html", gin.H{
 			"maxram":  L_MaxRam,
 			"maxdisk": L_MaxDisk,
 		})
@@ -93,7 +97,10 @@ func main() {
 		c.Redirect(301, "/home/dashboard/limiter")
 	})
 
-	r.DELETE("/home/dashboard/cleanup", handlers.Cleanup)
+	r.GET("/home/dashboard/tools", func(c *gin.Context) {
+		c.HTML(200, "tools.html", nil)
+	})
+	r.DELETE("/home/dashboard/tools/cleanup", handlers.Cleanup)
 
 	r.Run()
 

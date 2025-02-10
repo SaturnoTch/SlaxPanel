@@ -45,6 +45,7 @@ func Cmd(c *gin.Context) {
 	// Al finalizar cierra el archivo
 	defer file.Close()
 	// Escribe dentro del log el output
+	file.WriteString(" ")
 	file.WriteString(paramCommand)
 	file.WriteString(output)
 	// Redirecciona a /home/dashboard
