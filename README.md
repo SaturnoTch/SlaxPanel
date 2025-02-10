@@ -5,7 +5,7 @@ SlaxPanel, es un panel **OpenSource** Minimalista, que busca ayudarte a manejar 
 # Como instalar SlaxPanel en Windows
 1. Descargar el **repositorio**
 2. **Extrae** el .zip
-3. ir a la ruta src/control-panel-API y ejecutar el main.exe
+3. ir a la ruta src/control-panel-API y ejecutar "windows64_slaxpanelAPI"
 4. Ir al **Panel** en la Web: localhost:8080/home/dashboard
 5. Listo! Acabas de completar la instalacion en Windows
   
