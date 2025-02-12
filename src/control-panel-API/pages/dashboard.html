@@ -9,7 +9,7 @@
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
 >
-    <title>Dashboard SlaxPanel</title>
+    <title>Inicio - Dashboard SlaxPanel</title>
     <link rel="icon" href="./logo.png" type="image/x-icon">
     <style>
       body {
@@ -36,7 +36,7 @@
     <header style="position: sticky; top: 0; z-index: 999;">
      <nav style="background-color: #181b20" class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="/home">
+    <a class="navbar-item" href="/home/dashboard">
       <p class="title is-3">SlaxPanel</p>
 
     </a>
@@ -55,6 +55,10 @@
     <div class="navbar-end">
       <a id="home" class="navbar-item">
         <span class="icon"><i class="fa-solid fa-home"></i></span><span>Inicio</span>
+      </a>
+
+      <a id="tools" class="navbar-item">
+        <span class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Herramientas</span>
       </a>
 
       <a id="console" class="navbar-item">
@@ -89,6 +93,21 @@
            <span class="tag is-medium is-link"><span class="icon"><i class="fa-solid fa-check"></i></span><span>Facil de Usar</span></span>
             <span class="tag is-medium is-link"><span class="icon"><i class="fa-solid fa-code"></i></span><span>Codigo Abierto</span></span>
         </div>
+       </section>
+
+       <section id="tools_section" style="display: none;" class="section">
+        <hgroup>
+          <h2 class="title is-2">Herramientas</h2>
+          <p>Utiliza alguna de estas herramientas esenciales para tu proyecto.</p>
+          <hr>
+        </hgroup>
+
+        
+          <button id="trash" class="button"><span class="icon"><i class="fa-solid fa-trash"></i></span><span>Borrar Archivos Basura</span></button>
+          <a class="button" href="/home/dashboard/limiter"><span class="icon"><i class="fa-solid fa-bomb"></i></span><span>Limiter (Controlar los recursos)</span></a>
+       
+
+       </section>
        </section>
 
       <section id="console_section" style="display: none;" class="section is-small">
@@ -299,8 +318,10 @@
   </div>
 </footer>
     <script src="/static/js/showSection.js"></script>
-    <script src="/static/js/showCommand.js"></script>
     <script src="/static/js/showTimer.js"></script>
+    <script src="/static/js/showCommand.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/static/js/cleanup.js"></script>
     <script>
 
       //codigo proporcionado por https://bulma.io

@@ -3,30 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+>
     <title>Limiter</title>
+    <style>
+      body {
+        display: grid;
+        min-height: 100dvh;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .card {
+        box-shadow: 0px 0px 0px;
+        border: 1px solid #fff;
+      }
+  </style>
 </head>
 <body>
-    <a href="/home/dashboard"><button>Dashboard</button></a>
-    <h1>Limiter</h1>
+    <header style="position: sticky; top: 0; z-index: 999;">
+        <nav style="background-color: #181b20"  class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    
+     <a class="navbar-item" href="/home/dashboard">
+      <p class="title is-3">SlaxPanel</p>
+
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+</nav>
+    </header>
+    <section class="section">
+
+       <hgroup>
+        <h2 class="title is-2">Limiter</h2>
     <p>¿Para que sirve el Limiter?
-        el Limiter te ayuda a controlar
+        El Limiter te ayuda a controlar
         los recursos de tu servidor, si el servidor pasa del limite
         establecido, tu servidor automaticamente se reiniciara, para no sobre cargar al servidor.
     </p>
+    <hr>
+       </hgroup> 
 
-    <form action="/home/dashboard/limiter/updatelimiter" method="POST">
+    <div class="card">
+
+          <div class="card-content">
+            <div class="content">
+                 <form action="/home/dashboard/limiter/updatelimiter" method="POST">
         <label for="ram">Maximo uso de la Memoria Ram (<span style="color: rgb(212,83,0)">En MegaBytes</span>)</label>
-        <input id="ram" type="number" placeholder="64000" name="updateram" required>
-        <br>
+        <input class="input" id="ram" type="number" placeholder="64000" name="updateram" required>
+        <hr>
         <label for="disk">Maximo uso del almacenamiento(<span style="color: rgb(212,83,0)">En GigaBytes</span>)</label>
-        <input id="disk" type="number" placeholder="550" name="updatedisk" required>
-        <button type="submit">Apply Changes</button>
+        <input class="input" id="disk" type="number" placeholder="550" name="updatedisk" required>
+        <hr>
+        <button class="button is-primary" type="submit"><span class="icon"><i class="fa-solid fa-check"></i></span><span>Aplicar Cambios</span></button>
     </form>
-    <br>
-    <div>
-        <h2>Default Configuration</h2>
+</div>
+          </div>
+</div>
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                <h2>Configuración por Default</h2>
         <h3>Max Ram: {{.maxram}}<span style="color: rgb(0,194,0)">MB</span></h3> 
         <h3>Max Ram: {{.maxdisk}}<span style="color: rgb(0,194,0)">GB</span></h3> 
     </div>
+</div>
+    </div>
+</section>
+
+ <footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>© 2025 SlaxPanel</strong>. Todos los derechos reservados.
+    </p>
+    <p>Tambien puedes encontrar este proyecto en <a target="_blank" rel="noopener noreferrer" href="https://korxteam.netlify.app">KorxTeam</a></p>
+  </div>
+</footer>
 </body>
 </html>
