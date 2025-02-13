@@ -11,11 +11,7 @@ import (
 
 // Func
 func Cleanup(c *gin.Context) {
-	// Al final se ejecutara un codigo 200 y
-	// un Key,Value con informacion
-	defer c.JSON(200, gin.H{
-		"cleanupmessage": "Limpieza de tu servidor terminada",
-	})
+	var file_size int64
 	// Contiene todos los archivos json de logs
 	All_Logs := []string{
 		"console.json",
@@ -25,9 +21,22 @@ func Cleanup(c *gin.Context) {
 	// itera sobre el slice
 	// para borrar y crear los archivos
 	for _, removeFile := range All_Logs {
+		deleted_file, err := os.Open(removeFile)
+		if err != nil {
+			fmt.Println("Error: No se pudo abrir el archivo; ", err)
+		}
+		defer deleted_file.Close()
+		files_Stats, err := deleted_file.Stat()
+		if err != nil {
+			fmt.Println("Error: no se puede ver la informacion; ", err)
+		}
+		file_size += files_Stats.Size() / 1024
 		os.Remove(removeFile)
 		os.Create(removeFile)
 	}
+	c.JSON(200, gin.H{
+		"cleanupmessage": fmt.Sprintf("Limpieza de tu servidor terminada, %d kb Eliminados.", file_size),
+	})
 }
 
 func Cmd(c *gin.Context) {
