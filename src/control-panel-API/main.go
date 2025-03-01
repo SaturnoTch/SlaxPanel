@@ -2,9 +2,11 @@ package main
 
 // Imports necesarios
 import (
+	"crypto/rand"
 	"fmt"
 	"main/handlers"
 	"main/hwutils"
+	"math/big"
 	"os"
 	"strconv"
 	"time"
@@ -15,7 +17,31 @@ import (
 var L_MaxRam int = 64000
 var L_MaxDisk int = 655
 
+var Username string
+var Password string
+var Activate bool = false
+var ID string = "73628"
+
 func main() {
+	r := gin.Default()
+	/* Start Menu console
+	Este menu se mostrara al inicio del servidor
+	*/
+	fmt.Println("--/Estos datos seran usados en /login para poder dar acceso total--/ \n Ingrese el Username")
+	var Username_use string
+	_, err := fmt.Scanln(&Username_use)
+	if err != nil {
+		fmt.Println("Error: No se pudo escanear el username")
+	}
+	fmt.Println("Indica tu contraseña")
+	var Password_use string
+	_, err = fmt.Scanln(&Password_use)
+	if err != nil {
+		fmt.Println("Error: No se pudo escanear la contraseña")
+	}
+	fmt.Println("Inicia sesion en: localhost:8080/login \n Precione cualquier tecla para continuar")
+	fmt.Scan()
+	Activate = true
 	UsedRam := 0
 	UsedDisk := 0
 	go func() {
@@ -36,15 +62,18 @@ func main() {
 			time.Sleep(1 * time.Second)
 		}
 	}()
-
 	// Router
-	r := gin.Default()
-	r.LoadHTMLFiles("./pages/dashboard.html", "./pages/limiter.html", "./pages/tools.html")
+
+	r.LoadHTMLFiles("./pages/dashboard.html", "./pages/limiter.html", "./pages/tools.html", "./pages/login.html")
 	// cargo statics
 	r.Static("/static", "./pages/static")
 	// Stats la ruta que muestra informacion del sistema
 	// en la web
 	r.GET("/home/dashboard", func(c *gin.Context) {
+		_, err := c.Cookie(ID)
+		if err != nil {
+			c.Redirect(301, "/login")
+		}
 		cache_ConsoleLog, err := os.ReadFile("./console.json")
 		if err != nil {
 			fmt.Println("Error: No se pudo leer el archivo; ", err)
@@ -77,6 +106,10 @@ func main() {
 	r.POST("/cmd", handlers.Cmd)
 
 	r.GET("/home/dashboard/limiter", func(c *gin.Context) {
+		_, err := c.Cookie(ID)
+		if err != nil {
+			c.Redirect(301, "/login")
+		}
 		c.HTML(200, "limiter.html", gin.H{
 			"maxram":  L_MaxRam,
 			"maxdisk": L_MaxDisk,
@@ -102,6 +135,35 @@ func main() {
 	})
 	r.DELETE("/home/dashboard/tools/cleanup", handlers.Cleanup)
 
-	r.Run()
-
+	r.GET("/login", func(c *gin.Context) {
+		c.HTML(200, "login.html", nil)
+	})
+	r.POST("/admin", func(c *gin.Context) {
+		recover_username := c.PostForm("user")
+		recover_password := c.PostForm("password")
+		fileAdm, err := os.OpenFile("./admin/admin.json", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			fmt.Println("Error: No se puede abrir el archivo; ", err)
+			c.Redirect(200, "/login")
+		}
+		defer fileAdm.Close()
+		if recover_username == Username_use && recover_password == Password_use {
+			randomNumber, err := rand.Int(rand.Reader, big.NewInt(1000000))
+			if err != nil {
+				fmt.Println("Error: No se pudo generar un número aleatorio; ", err)
+				c.Redirect(301, "/login")
+				return
+			}
+			ID = randomNumber.String()
+			fmt.Println(ID)
+			c.SetCookie(ID, "", 900, "/", "", false, true)
+			fileAdm.WriteString("Cookie de entrada al panel concedido.\n")
+			c.Redirect(301, "/home/dashboard")
+		} else {
+			c.Redirect(301, "/login")
+		}
+	})
+	if Activate {
+		r.Run()
+	}
 }

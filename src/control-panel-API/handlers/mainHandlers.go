@@ -77,3 +77,6 @@ func Shutdown(c *gin.Context) {
 	// con el codigo 301(Permanentemente Removido)
 	c.Redirect(301, "/home/dashboard")
 }
+
+
+
