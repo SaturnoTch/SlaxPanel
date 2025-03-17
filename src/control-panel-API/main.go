@@ -4,6 +4,7 @@ package main
 import (
 	"crypto/rand"
 	"fmt"
+	KeyAuthApp "main/KeyAuth"
 	"main/handlers"
 	"main/hwutils"
 	"math/big"
@@ -22,26 +23,35 @@ var Password string
 var Activate bool = false
 var ID string = "73628"
 
+func LoginByKeyAuth() {
+	fmt.Println("----SlaxPanel----\nOptions\n1.Login\n2.Soon")
+	var inputOptions int
+	fmt.Scan(&inputOptions)
+	switch inputOptions {
+	case 1:
+		fmt.Println("--Login--\nIngrese su username: ")
+		fmt.Scan(&Username)
+		fmt.Println("Ingrese su password: ")
+		fmt.Scan(&Password)
+		KeyAuthApp.Login(string(Username), string(Password))
+	default:
+		panic("Option not recognized")
+	}
+}
+
 func main() {
+	KeyAuthApp.Api(
+		"SlaxPanel", // App name
+		"nil",       // Account ID
+		"nil",       // Encryption key, keep hidden and protect this string in your code!
+		"1.0",
+		"null", // Token Path (PUT "null" IF YOU DO NOT WANT TO USE THE TOKEN VALIDATION SYSTEM! MUST DISABLE VIA APP SETTINGS)
+	)
+	LoginByKeyAuth()
 	r := gin.Default()
 	/* Start Menu console
 	Este menu se mostrara al inicio del servidor
 	*/
-	fmt.Println("--/Estos datos seran usados en /login para poder dar acceso total--/ \n Ingrese el Username")
-	var Username_use string
-	_, err := fmt.Scanln(&Username_use)
-	if err != nil {
-		fmt.Println("Error: No se pudo escanear el username")
-	}
-	fmt.Println("Indica tu contraseña")
-	var Password_use string
-	_, err = fmt.Scanln(&Password_use)
-	if err != nil {
-		fmt.Println("Error: No se pudo escanear la contraseña")
-	}
-	fmt.Println("Inicia sesion en: localhost:8080/login \n Precione cualquier tecla para continuar")
-	fmt.Scan()
-	Activate = true
 	UsedRam := 0
 	UsedDisk := 0
 	go func() {
@@ -147,7 +157,7 @@ func main() {
 			c.Redirect(200, "/login")
 		}
 		defer fileAdm.Close()
-		if recover_username == Username_use && recover_password == Password_use {
+		if recover_username == Username && recover_password == Password {
 			randomNumber, err := rand.Int(rand.Reader, big.NewInt(1000000))
 			if err != nil {
 				fmt.Println("Error: No se pudo generar un número aleatorio; ", err)
@@ -163,7 +173,5 @@ func main() {
 			c.Redirect(301, "/login")
 		}
 	})
-	if Activate {
-		r.Run()
-	}
+	r.Run()
 }

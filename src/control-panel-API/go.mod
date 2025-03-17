@@ -4,7 +4,10 @@ go 1.23.4
 
 require github.com/shirou/gopsutil/v3 v3.24.5
 
-require github.com/shoenig/go-m1cpu v0.1.6 // indirect
+require (
+	github.com/google/uuid v1.6.0 // indirect
+	github.com/shoenig/go-m1cpu v0.1.6 // indirect
+)
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect
