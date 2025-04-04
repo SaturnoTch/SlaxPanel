@@ -4,7 +4,6 @@ package main
 import (
 	"crypto/rand"
 	"fmt"
-	KeyAuthApp "main/KeyAuth"
 	"main/handlers"
 	"main/hwutils"
 	"math/big"
@@ -18,56 +17,45 @@ import (
 var L_MaxRam int = 64000
 var L_MaxDisk int = 655
 
-var Username string
-var Password string
-var Activate bool = false
 var ID string = "73628"
 
-func LoginByKeyAuth() {
-	fmt.Println("----SlaxPanel----\nOptions\n1.Login\n2.Soon")
-	var inputOptions int
-	fmt.Scan(&inputOptions)
-	switch inputOptions {
-	case 1:
-		fmt.Println("--Login--\nIngrese su username: ")
-		fmt.Scan(&Username)
-		fmt.Println("Ingrese su password: ")
-		fmt.Scan(&Password)
-		KeyAuthApp.Login(string(Username), string(Password))
-	default:
-		panic("Option not recognized")
-	}
-}
-
 func main() {
-	KeyAuthApp.Api(
-		"SlaxPanel", // App name
-		"nil",       // Account ID
-		"nil",       // Encryption key, keep hidden and protect this string in your code!
-		"1.0",
-		"null", // Token Path (PUT "null" IF YOU DO NOT WANT TO USE THE TOKEN VALIDATION SYSTEM! MUST DISABLE VIA APP SETTINGS)
-	)
-	LoginByKeyAuth()
+	timeNow := time.Now()
 	r := gin.Default()
 	/* Start Menu console
 	Este menu se mostrara al inicio del servidor
 	*/
+	fmt.Println("--/Estos datos seran usados en /login para poder dar acceso total--/ \n Ingrese el Username")
+	var Username_use string
+	_, err := fmt.Scanln(&Username_use)
+	if err != nil {
+		fmt.Println("Error: No se pudo escanear el username")
+	}
+	fmt.Println("Indica tu contraseña")
+	var Password_use string
+	_, err = fmt.Scanln(&Password_use)
+	if err != nil {
+		fmt.Println("Error: No se pudo escanear la contraseña")
+	}
+	fmt.Println("Inicia sesion en: localhost:8080/login \n Precione cualquier tecla para continuar")
+	fmt.Scan()
 	UsedRam := 0
 	UsedDisk := 0
 	go func() {
 		for {
 			_, UsedRam, _ = hwutils.GetRam()
 			_, UsedDisk, _ = hwutils.GetDisk()
-			if UsedRam >= L_MaxRam || UsedDisk >= L_MaxDisk {
+			if UsedRam >= L_MaxRam {
 				log := hwutils.SendCommand("shutdown -r -f -t 60")
 				file_log, err := os.OpenFile("Limiter.json", os.O_CREATE, os.ModeAppend)
 				if err != nil {
 					fmt.Println("esto va en errors.json --Aun no esta listo --")
-					defer file_log.Close()
 					return
 				}
 				defer file_log.Close()
 				os.WriteFile(file_log.Name(), []byte(log), 0644)
+			} else if UsedDisk >= L_MaxDisk {
+				handlers.Cleanup(nil)
 			}
 			time.Sleep(1 * time.Second)
 		}
@@ -116,6 +104,7 @@ func main() {
 	r.POST("/cmd", handlers.Cmd)
 
 	r.GET("/home/dashboard/limiter", func(c *gin.Context) {
+		fmt.Println(ID)
 		_, err := c.Cookie(ID)
 		if err != nil {
 			c.Redirect(301, "/login")
@@ -134,7 +123,16 @@ func main() {
 		cnv_diskUpdated, err := strconv.Atoi(diskUpdated)
 		if err != nil {
 			fmt.Println("Error: No se pudo convertir; ", err)
+			return
 		}
+		filelog_admin, err := os.OpenFile("./admin/admin.json", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			fmt.Println("Error: No se pudo abrir el archivo json 'admin.json'; ", err)
+			return
+		}
+		defer filelog_admin.Close()
+		getip := c.ClientIP()
+		filelog_admin.WriteString(fmt.Sprint(timeNow, "; Configuracion del limiter actualizada; ClientIP:", getip))
 		L_MaxDisk = cnv_diskUpdated
 		L_MaxRam = cnv_ramUpdated
 		c.Redirect(301, "/home/dashboard/limiter")
@@ -157,7 +155,7 @@ func main() {
 			c.Redirect(200, "/login")
 		}
 		defer fileAdm.Close()
-		if recover_username == Username && recover_password == Password {
+		if recover_username == Username_use && recover_password == Password_use {
 			randomNumber, err := rand.Int(rand.Reader, big.NewInt(1000000))
 			if err != nil {
 				fmt.Println("Error: No se pudo generar un número aleatorio; ", err)
@@ -165,11 +163,19 @@ func main() {
 				return
 			}
 			ID = randomNumber.String()
-			fmt.Println(ID)
+			getip := c.ClientIP()
 			c.SetCookie(ID, "", 900, "/", "", false, true)
-			fileAdm.WriteString("Cookie de entrada al panel concedido.\n")
+			fileAdm.WriteString(fmt.Sprint(timeNow, "Warning: Cookie de entrada al panel concedido; ClientIP:", getip, "\n"))
 			c.Redirect(301, "/home/dashboard")
 		} else {
+			filelog_admin, err := os.OpenFile("./admin/admin.json", os.O_APPEND|os.O_CREATE, os.ModeAppend)
+			if err != nil {
+				fmt.Println("Error: No se pudo abrir el archivo json 'admin.json'; ", err)
+				return
+			}
+			defer filelog_admin.Close()
+			getip := c.ClientIP()
+			filelog_admin.WriteString(fmt.Sprint(timeNow, "Warning: Contraseña incorrecte; ClientIP:", getip, "\n"))
 			c.Redirect(301, "/login")
 		}
 	})

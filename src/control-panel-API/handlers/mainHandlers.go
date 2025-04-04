@@ -17,6 +17,7 @@ func Cleanup(c *gin.Context) {
 		"console.json",
 		"errors.json",
 		"Limiter.json",
+		"./admin/admin.json",
 	}
 	// itera sobre el slice
 	// para borrar y crear los archivos
@@ -34,9 +35,11 @@ func Cleanup(c *gin.Context) {
 		os.Remove(removeFile)
 		os.Create(removeFile)
 	}
-	c.JSON(200, gin.H{
-		"cleanupmessage": fmt.Sprintf("Limpieza de tu servidor terminada, %d kb Eliminados.", file_size),
-	})
+	if c != nil {
+		c.JSON(200, gin.H{
+			"cleanupmessage": fmt.Sprintf("Limpieza de tu servidor terminada, %d kb Eliminados.", file_size),
+		})
+	}
 }
 
 func Cmd(c *gin.Context) {
@@ -77,6 +80,3 @@ func Shutdown(c *gin.Context) {
 	// con el codigo 301(Permanentemente Removido)
 	c.Redirect(301, "/home/dashboard")
 }
-
-
-
